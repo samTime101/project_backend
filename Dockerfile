@@ -6,10 +6,10 @@ RUN rm -rf /var/lib/apt/lists/*
 
 
 WORKDIR /app
-COPY expenser/requirements.txt ./expenser/
-RUN pip install --no-cache-dir -r expenser/requirements.txt
-COPY expenser ./expenser
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+COPY ./ ./
 
 EXPOSE 8000
 WORKDIR /app
-CMD ["sh", "-c", "python expenser/manage.py runserver 0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py runserver 0.0.0.0:8000"]
