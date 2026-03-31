@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     'api.expenses',
     'api.user',
     'api.transaction',
+    'api.paymentplan',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
