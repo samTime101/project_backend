@@ -12,6 +12,13 @@ class ExpenseSerializer(serializers.ModelSerializer):
         if value <= 0:
             raise serializers.ValidationError("Amount must be greater than zero.")
         return value
+    
+    def validate(self, data):
+        user = self.context['request'].user
+        if data['type'] == 'Expense' and user.balance < data['amount']:
+            raise serializers.ValidationError("Insufficient balance for this expense.")
+        return data
+    
 
 class ExpenseFilter(django_filters.FilterSet):
     start_date = django_filters.DateFilter(field_name='date', lookup_expr='gte')
