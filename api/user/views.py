@@ -7,16 +7,22 @@ from rest_framework.response import Response
 
 User = get_user_model()
 
-class UserViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+class UserViewSet(mixins.ListModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = UserSerializer
 
     def get_queryset(self):
-        return User.objects.all()
+        return User.objects.filter(id=self.request.user.id)
     
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get', 'patch'])
     def me(self, request):
-        serializer = self.get_serializer(request.user)
+        if request.method == 'GET':
+            serializer = self.get_serializer(request.user)
+            return Response(serializer.data)
+        
+        serializer = self.get_serializer(request.user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
         return Response(serializer.data)
     
 

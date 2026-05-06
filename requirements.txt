@@ -1,6 +1,7 @@
 anyio==4.13.0
 asgiref==3.11.1
 attrs==26.1.0
+bcrypt==5.0.0
 CacheControl==0.14.4
 certifi==2026.2.25
 cffi==2.0.0
@@ -36,10 +37,12 @@ jsonschema-specifications==2025.9.1
 msgpack==1.1.2
 proto-plus==1.27.1
 protobuf==6.33.6
+psycopg[binary]==3.3.3
 pyasn1==0.6.3
 pyasn1_modules==0.4.2
 pycparser==3.0
 PyJWT==2.12.1
+python-decouple==3.8
 python-dotenv==1.2.2
 PyYAML==6.0.3
 referencing==0.37.0
