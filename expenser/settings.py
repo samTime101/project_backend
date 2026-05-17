@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'sql',
     'api.authentication',
     'api.expenses',
+    'api.ncell',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -138,3 +139,10 @@ SPECTACULAR_SETTINGS = {
     },
 
 }
+
+NCELL_REDIRECT_URL = config(
+    'NCELL_REDIRECT_URL',
+    default='https://www.ncell.com.np/en/individual/order',
+)
+NCELL_TIMEOUT_SECONDS = config('NCELL_TIMEOUT_SECONDS', default=20, cast=int)
+NCELL_VERIFY_SSL = config('NCELL_VERIFY_SSL', default=False, cast=bool)
