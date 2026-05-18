@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'api.authentication',
     'api.expenses',
     'api.ncell',
+    'api.ntc',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -146,3 +147,7 @@ NCELL_REDIRECT_URL = config(
 )
 NCELL_TIMEOUT_SECONDS = config('NCELL_TIMEOUT_SECONDS', default=20, cast=int)
 NCELL_VERIFY_SSL = config('NCELL_VERIFY_SSL', default=False, cast=bool)
+
+NTC_URL = config('NTC_URL', default='')
+NTC_TIMEOUT_SECONDS = config('NTC_TIMEOUT_SECONDS', default=20, cast=int)
+NTC_VERIFY_SSL = config('NTC_VERIFY_SSL', default=False, cast=bool)
