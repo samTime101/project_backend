@@ -93,6 +93,7 @@ def _get_recaptcha_token():
 
 
 def _post_to_ntc(payload):
+    payload['recaptchaToken'] = _get_recaptcha_token()
     headers = {
         'Accept': 'application/json, text/plain, */*',
         'Content-Type': 'application/json',
@@ -180,11 +181,9 @@ class NtcSendOtpView(APIView):
             'package_id': serializer.validated_data['pack']['p_id'],
             'phone': serializer.validated_data['phone_number'],
             'BusiCode': serializer.validated_data['pack']['busicode'],
-            'recaptchaToken': '',
         }
 
         try:
-            payload['recaptchaToken'] = _get_recaptcha_token()
             ntc_http_response = _post_to_ntc(payload)
             ntc_response = _parse_ntc_response(payload, ntc_http_response)
         except RequestException as exc:
