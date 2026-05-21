@@ -9,12 +9,13 @@ User = get_user_model()
 class TransactionResponseSerializer(serializers.ModelSerializer):
     initiator_name = serializers.CharField(source='initiator.first_name', read_only=True)
     target_name = serializers.CharField(source='target.first_name', read_only=True)
+    service_label = serializers.CharField(read_only=True)
 
     class Meta:
         model = Transaction
         fields = [
             'id', 'initiator_name', 'target_name',
-            'transaction_type', 'status', 'amount', 'description', 'created_at'
+            'transaction_type', 'status', 'amount', 'description', 'service_label', 'created_at'
         ]
         read_only_fields = fields
 

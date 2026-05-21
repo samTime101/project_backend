@@ -120,6 +120,7 @@ class Transaction(models.Model):
     status = models.CharField(max_length=15, choices=STATUS_CHOICES)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField(blank=True)
+    service_label = models.CharField(max_length=100, blank=True)
     payment_plan = models.OneToOneField(PaymentPlan, null=True, blank=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
