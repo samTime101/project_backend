@@ -5,10 +5,11 @@ class SavingsGoalSerializer(serializers.ModelSerializer):
     progress_percentage = serializers.ReadOnlyField()
     image = serializers.SerializerMethodField(read_only=True)
     image_file = serializers.FileField(write_only=True, required=False, allow_null=True)
+    remove_image = serializers.BooleanField(write_only=True, required=False, default=False)
 
     class Meta:
         model = SavingsGoal
-        fields = ['id', 'title', 'image_url', 'image', 'image_file', 'target_amount', 'current_amount', 'due_date', 'progress_percentage', 'created_at']
+        fields = ['id', 'title', 'image', 'image_file', 'remove_image', 'target_amount', 'current_amount', 'due_date', 'progress_percentage', 'created_at']
         read_only_fields = ['id', 'created_at']
 
     def get_image(self, obj):
@@ -30,6 +31,8 @@ class SavingsGoalSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         image_file = validated_data.pop('image_file', None)
+        validated_data.pop('remove_image', False)
+        validated_data['image_url'] = ''
         goal = SavingsGoal(**validated_data)
         if image_file:
             goal.image = image_file
@@ -38,9 +41,16 @@ class SavingsGoalSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         image_file = validated_data.pop('image_file', None)
+        remove_image = validated_data.pop('remove_image', False)
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
+        instance.image_url = ''
+        if remove_image and instance.image:
+            instance.image.delete(save=False)
+            instance.image = None
         if image_file:
+            if instance.image:
+                instance.image.delete(save=False)
             instance.image = image_file
         instance.save()
         return instance
