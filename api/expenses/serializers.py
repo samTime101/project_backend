@@ -3,6 +3,22 @@ from datetime import timedelta
 from rest_framework import serializers
 from sql.models import Expense
 
+
+LOCKED_TRANSFER_CATEGORIES = {
+    'transfer sent',
+    'transfer received',
+    'request paid',
+    'request received',
+}
+
+
+def normalize_expense_category(category):
+    return ' '.join(str(category or '').split()).strip().lower()
+
+
+def is_locked_transfer_expense(expense):
+    return normalize_expense_category(expense.category) in LOCKED_TRANSFER_CATEGORIES
+
 class ExpenseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Expense
@@ -18,6 +34,9 @@ class ExpenseSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         expense_type = data.get('type', getattr(self.instance, 'type', None))
         amount = data.get('amount', getattr(self.instance, 'amount', None))
+
+        if self.instance and is_locked_transfer_expense(self.instance):
+            raise serializers.ValidationError('Transfer-generated ledger rows cannot be edited.')
 
         if expense_type == 'Expense':
             required_amount = amount
