@@ -4,11 +4,13 @@ from rest_framework import serializers
 from sql.models import Expense
 
 
-LOCKED_TRANSFER_CATEGORIES = {
+LOCKED_SYSTEM_CATEGORIES = {
     'transfer sent',
     'transfer received',
     'request paid',
     'request received',
+    'ncell datapack',
+    'nepal telecom',
 }
 
 
@@ -17,7 +19,7 @@ def normalize_expense_category(category):
 
 
 def is_locked_transfer_expense(expense):
-    return normalize_expense_category(expense.category) in LOCKED_TRANSFER_CATEGORIES
+    return normalize_expense_category(expense.category) in LOCKED_SYSTEM_CATEGORIES
 
 class ExpenseSerializer(serializers.ModelSerializer):
     class Meta:
